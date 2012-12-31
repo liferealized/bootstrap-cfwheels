@@ -71,6 +71,27 @@
 		<cfreturn textFieldTag(argumentCollection=arguments)>
 	</cffunction>
 
+	<cffunction name="bCheckBoxTag" returntype="string" hint="Bootstrap markup version of the Wheels `checkBox` form helper.">
+		<cfscript>
+			var loc = {};
+
+			loc.field = checkBoxTag(
+				argumentCollection=arguments,
+				labelPlacement="around",
+				labelClass="checkbox"
+			);
+
+			loc.field =
+				'<div class="control-group">
+					<label class="control-label"></label>
+					<div class="controls">
+						#loc.field#
+					</div>
+				</div>';
+		</cfscript>
+		<cfreturn loc.field>
+	</cffunction>
+
 	<cffunction name="bTextAreaTag" returntype="string" hint="Bootstrap markup version of the standard Wheels `textFieldTag` form helper.">
 		<cfscript>
 			var loc = {
