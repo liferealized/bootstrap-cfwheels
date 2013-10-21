@@ -71,6 +71,15 @@
 		<cfreturn textFieldTag(argumentCollection=arguments)>
 	</cffunction>
 
+	<cffunction name="bPasswordFieldTag" returntype="string" hint="Bootstrap markup version of the standard Wheels `passwordFieldTag` form helper.">
+		<cfscript>
+			var loc = {
+				formFieldArgs=$bootstrapFormFieldArgs(arguments)
+			};
+		</cfscript>
+		<cfreturn passwordFieldTag(argumentCollection=arguments)>
+	</cffunction>
+
 	<cffunction name="bCheckBoxTag" returntype="string" hint="Bootstrap markup version of the Wheels `checkBox` form helper.">
 		<cfscript>
 			var loc = {};
