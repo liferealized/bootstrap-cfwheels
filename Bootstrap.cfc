@@ -243,9 +243,6 @@
 				{
 					loc.flashKey = ListGetAt(loc.flashKeyList, loc.i);
 
-					if (not isSimpleValue(flash(loc.flashKey)) or not len(flash(loc.flashKey)))
-						continue;
-
 					loc.flashMessages &=
 						'<div class="alert alert-#LCase(loc.flashKey)# fade in">
 							<a class="close" data-dismiss="alert" href="##" title="Dismiss">&times;</a>
