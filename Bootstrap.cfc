@@ -1,34 +1,34 @@
 <cfcomponent mixin="controller" dependency="NestedErrorMessageOn">
 
 	<!---
-		8888888b.           888      888 d8b          
-		888   Y88b          888      888 Y8P          
-		888    888          888      888              
-		888   d88P 888  888 88888b.  888 888  .d8888b 
-		8888888P"  888  888 888 "88b 888 888 d88P"    
-		888        888  888 888  888 888 888 888      
-		888        Y88b 888 888 d88P 888 888 Y88b.    
-		888         "Y88888 88888P"  888 888  "Y8888P 
-	
+		8888888b.           888      888 d8b
+		888   Y88b          888      888 Y8P
+		888    888          888      888
+		888   d88P 888  888 88888b.  888 888  .d8888b
+		8888888P"  888  888 888 "88b 888 888 d88P"
+		888        888  888 888  888 888 888 888
+		888        Y88b 888 888 d88P 888 888 Y88b.
+		888         "Y88888 88888P"  888 888  "Y8888P
+
 	Public --->
 
 	<cffunction name="init">
-		<cfset this.version = "1.1.7,1.1.8">
+		<cfset this.version = "1.1.7,1.1.8,1.4.5">
 		<cfreturn this>
 	</cffunction>
 
 	<!---
-		8888888888                                              88888888888                
-		888                                                         888                    
-		888                                                         888                    
-		8888888  .d88b.  888d888 88888b.d88b.                       888   8888b.   .d88b.  
-		888     d88""88b 888P"   888 "888 "88b                      888      "88b d88P"88b 
-		888     888  888 888     888  888  888      888888          888  .d888888 888  888 
-		888     Y88..88P 888     888  888  888                      888  888  888 Y88b 888 
-		888      "Y88P"  888     888  888  888                      888  "Y888888  "Y88888 
-		                                                                               888 
-		                                                                          Y8b d88P 
-		                                                                           "Y88P"  
+		8888888888                                              88888888888
+		888                                                         888
+		888                                                         888
+		8888888  .d88b.  888d888 88888b.d88b.                       888   8888b.   .d88b.
+		888     d88""88b 888P"   888 "888 "88b                      888      "88b d88P"88b
+		888     888  888 888     888  888  888      888888          888  .d888888 888  888
+		888     Y88..88P 888     888  888  888                      888  888  888 Y88b 888
+		888      "Y88P"  888     888  888  888                      888  "Y888888  "Y88888
+		                                                                               888
+		                                                                          Y8b d88P
+		                                                                           "Y88P"
 	Form - tag helpers --->
 
 	<cffunction name="bSelectTag" returntype="string" hint="Bootstrap markup version of the standard Wheels `selectTag` form helper.">
@@ -119,17 +119,17 @@
 	</cffunction>
 
 	<!---
-		8888888888                                               .d88888b.  888       d8b                   888    
-		888                                                     d88P" "Y88b 888       Y8P                   888    
-		888                                                     888     888 888                             888    
-		8888888  .d88b.  888d888 88888b.d88b.                   888     888 88888b.  8888  .d88b.   .d8888b 888888 
-		888     d88""88b 888P"   888 "888 "88b                  888     888 888 "88b "888 d8P  Y8b d88P"    888    
-		888     888  888 888     888  888  888      888888      888     888 888  888  888 88888888 888      888    
-		888     Y88..88P 888     888  888  888                  Y88b. .d88P 888 d88P  888 Y8b.     Y88b.    Y88b.  
-		888      "Y88P"  888     888  888  888                   "Y88888P"  88888P"   888  "Y8888   "Y8888P  "Y888 
-		                                                                              888                          
-		                                                                             d88P                          
-		                                                                           888P"                           
+		8888888888                                               .d88888b.  888       d8b                   888
+		888                                                     d88P" "Y88b 888       Y8P                   888
+		888                                                     888     888 888                             888
+		8888888  .d88b.  888d888 88888b.d88b.                   888     888 88888b.  8888  .d88b.   .d8888b 888888
+		888     d88""88b 888P"   888 "888 "88b                  888     888 888 "88b "888 d8P  Y8b d88P"    888
+		888     888  888 888     888  888  888      888888      888     888 888  888  888 88888888 888      888
+		888     Y88..88P 888     888  888  888                  Y88b. .d88P 888 d88P  888 Y8b.     Y88b.    Y88b.
+		888      "Y88P"  888     888  888  888                   "Y88888P"  88888P"   888  "Y8888   "Y8888P  "Y888
+		                                                                              888
+		                                                                             d88P
+		                                                                           888P"
 	Form - object helpers --->
 
 	<cffunction name="bCheckBox" returntype="string" hint="Bootstrap markup version of the Wheels `checkBox` form helper.">
@@ -206,7 +206,7 @@
 		<cfargument name="class" type="string" required="false" default="" hint="Classes to apply to the box.">
 		<cfscript>
 			var loc = {};
-			
+
 			loc.field = '<div class="control-group">';
 			loc.field &= '<label class="control-label">#h(arguments.label)#</label>';
 			loc.field &= '<div class="controls"><span class="uneditable-input #h(arguments.class)#">#arguments.value#</span></div>';
@@ -216,17 +216,17 @@
 	</cffunction>
 
 	<!---
-		888                                          888    
-		888                                          888    
-		888                                          888    
-		888       8888b.  888  888  .d88b.  888  888 888888 
-		888          "88b 888  888 d88""88b 888  888 888    
-		888      .d888888 888  888 888  888 888  888 888    
-		888      888  888 Y88b 888 Y88..88P Y88b 888 Y88b.  
-		88888888 "Y888888  "Y88888  "Y88P"   "Y88888  "Y888 
-		                       888                          
-		                  Y8b d88P                          
-		                   "Y88P"                           
+		888                                          888
+		888                                          888
+		888                                          888
+		888       8888b.  888  888  .d88b.  888  888 888888
+		888          "88b 888  888 d88""88b 888  888 888
+		888      .d888888 888  888 888  888 888  888 888
+		888      888  888 Y88b 888 Y88..88P Y88b 888 Y88b.
+		88888888 "Y888888  "Y88888  "Y88P"   "Y88888  "Y888
+		                       888
+		                  Y8b d88P
+		                   "Y88P"
 	Layout helpers --->
 
 	<cffunction name="bFlashMessages" returntype="string" hint="Bootstrap markup version of the Wheels `flashMessages` view helper.">
@@ -255,14 +255,14 @@
 	</cffunction>
 
 	<!---
-		888b     d888 d8b                   
-		8888b   d8888 Y8P                   
-		88888b.d88888                       
-		888Y88888P888 888 .d8888b   .d8888b 
-		888 Y888P 888 888 88K      d88P"    
-		888  Y8P  888 888 "Y8888b. 888      
-		888   "   888 888      X88 Y88b.    
-		888       888 888  88888P'  "Y8888P 
+		888b     d888 d8b
+		8888b   d8888 Y8P
+		88888b.d88888
+		888Y88888P888 888 .d8888b   .d8888b
+		888 Y888P 888 888 88K      d88P"
+		888  Y8P  888 888 "Y8888b. 888
+		888   "   888 888      X88 Y88b.
+		888       888 888  88888P'  "Y8888P
 
 	Miscellaneous helpers --->
 
@@ -275,7 +275,7 @@
 			loc.paginationArgs.prepend = '<div class="pagination"><ul>';
 			loc.paginationArgs.append = '</ul></div>';
 			loc.paginationArgs.prependToPage = '<li>';
-			loc.paginationArgs.appendToPage = '</li>'; 
+			loc.paginationArgs.appendToPage = '</li>';
 			loc.paginationArgs.classForCurrent = "active";
 			loc.paginationArgs.linkToCurrentPage = false;
 			loc.paginationArgs.anchorDivider = "";
@@ -288,14 +288,14 @@
 	</cffunction>
 
 	<!---
-		8888888b.          d8b                   888            
-		888   Y88b         Y8P                   888            
-		888    888                               888            
-		888   d88P 888d888 888 888  888  8888b.  888888 .d88b.  
-		8888888P"  888P"   888 888  888     "88b 888   d8P  Y8b 
-		888        888     888 Y88  88P .d888888 888   88888888 
-		888        888     888  Y8bd8P  888  888 Y88b. Y8b.     
-		888        888     888   Y88P   "Y888888  "Y888 "Y8888  
+		8888888b.          d8b                   888
+		888   Y88b         Y8P                   888
+		888    888                               888
+		888   d88P 888d888 888 888  888  8888b.  888888 .d88b.
+		8888888P"  888P"   888 888  888     "88b 888   d8P  Y8b
+		888        888     888 Y88  88P .d888888 888   88888888
+		888        888     888  Y8bd8P  888  888 Y88b. Y8b.
+		888        888     888   Y88P   "Y888888  "Y888 "Y8888
 
 	Private --->
 
