@@ -272,8 +272,8 @@
 
 			loc.paginationArgs = Duplicate(arguments);
 
-			loc.paginationArgs.prepend = '<div class="pagination"><ul>';
-			loc.paginationArgs.append = '</ul></div>';
+			loc.paginationArgs.prepend = '<ul class="pagination">';
+			loc.paginationArgs.append = '</ul>';
 			loc.paginationArgs.prependToPage = '<li>';
 			loc.paginationArgs.appendToPage = '</li>';
 			loc.paginationArgs.classForCurrent = "active";
