@@ -40,8 +40,19 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
     if (local.isPrimary)
       local.class = listAppend(local.class, "btn-primary", " ");
 
-    local.submitTag = core.submitTag(argumentCollection=arguments);
-    return replaceNoCase(local.submitTag, "<input", "<input class=""#local.class#""");
+    local.rv = core.submitTag(argumentCollection=arguments);
+    local.rv = replaceNoCase(
+      local.rv,
+      "<input",
+      "<input class=""#local.class#"""
+    );
+
+    return
+      '<div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          #local.rv#
+        </div>
+      </div>';
   }
 
   public string function startFormTag(string class = "") {
