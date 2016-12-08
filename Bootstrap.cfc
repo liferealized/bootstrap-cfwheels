@@ -1,388 +1,307 @@
-<cfcomponent mixin="controller" dependency="NestedErrorMessageOn">
+component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
 
-	<!---
-		8888888b.           888      888 d8b
-		888   Y88b          888      888 Y8P
-		888    888          888      888
-		888   d88P 888  888 88888b.  888 888  .d8888b
-		8888888P"  888  888 888 "88b 888 888 d88P"
-		888        888  888 888  888 888 888 888
-		888        Y88b 888 888 d88P 888 888 Y88b.
-		888         "Y88888 88888P"  888 888  "Y8888P
+  //   8888888b.           888      888 d8b
+  //   888   Y88b          888      888 Y8P
+  //   888    888          888      888
+  //   888   d88P 888  888 88888b.  888 888  .d8888b
+  //   8888888P"  888  888 888 "88b 888 888 d88P"
+  //   888        888  888 888  888 888 888 888
+  //   888        Y88b 888 888 d88P 888 888 Y88b.
+  //   888         "Y88888 88888P"  888 888  "Y8888P
+  // Public
 
-	Public --->
+  public Bootstrap function init() {
+    this.version = "2.0";
+    return this;
+  }
 
-	<cffunction name="init">
-		<cfset this.version = "1.1.7,1.1.8,1.4.5">
-		<cfreturn this>
-	</cffunction>
+  //
+  //   8888888888                                              88888888888
+  //   888                                                         888
+  //   888                                                         888
+  //   8888888  .d88b.  888d888 88888b.d88b.                       888   8888b.   .d88b.
+  //   888     d88""88b 888P"   888 "888 "88b                      888      "88b d88P"88b
+  //   888     888  888 888     888  888  888      888888          888  .d888888 888  888
+  //   888     Y88..88P 888     888  888  888                      888  888  888 Y88b 888
+  //   888      "Y88P"  888     888  888  888                      888  "Y888888  "Y88888
+  //                                                                                  888
+  //                                                                             Y8b d88P
+  //                                                                              "Y88P"
+  // Form - tag helpers
 
-	<!---
-		8888888888                                              88888888888
-		888                                                         888
-		888                                                         888
-		8888888  .d88b.  888d888 88888b.d88b.                       888   8888b.   .d88b.
-		888     d88""88b 888P"   888 "888 "88b                      888      "88b d88P"88b
-		888     888  888 888     888  888  888      888888          888  .d888888 888  888
-		888     Y88..88P 888     888  888  888                      888  888  888 Y88b 888
-		888      "Y88P"  888     888  888  888                      888  "Y888888  "Y88888
-		                                                                               888
-		                                                                          Y8b d88P
-		                                                                           "Y88P"
-	Form - tag helpers --->
+  public string function selectTag() {
+    arguments = $bootstrapFormFieldArgs(argumentCollection = arguments);
+    return core.selectTag(argumentCollection = arguments);
+  }
 
-	<cffunction name="bSelectTag" returntype="string" hint="Bootstrap markup version of the standard Wheels `selectTag` form helper.">
-		<cfscript>
-			var loc = {
-				formFieldArgs=$bootstrapFormFieldArgs(arguments)
-			};
-		</cfscript>
-		<cfreturn selectTag(argumentCollection=loc.formFieldArgs)>
-	</cffunction>
+  public string function submitTag(string class = "", boolean isPrimary = false) {
 
-	<cffunction name="bSubmitTag" returntype="string" hint="Bootstrap markup version of the standard Wheels `submitTag` form helper.">
-		<cfargument name="class" type="string" required="false" default="" hint="Space-delimited list of classes to apply to the submit button.">
-		<cfargument name="isPrimary" type="boolean" required="false" default="false" hint="Whether or not to apply the `btn-primary` style to the button.">
-		<cfscript>
-			var loc = {
-				coreSubmitTag=core.submitTag,
-				class=ListAppend(arguments.class, "btn", " "),
-				isPrimary=arguments.isPrimary
-			};
+    local.class = listAppend(arguments.class, "btn", " ");
+    local.isPrimary = arguments.isPrimary;
 
-			StructDelete(arguments, "isPrimary");
-			StructDelete(arguments, "class");
+    StructDelete(arguments, "isPrimary");
+    StructDelete(arguments, "class");
 
-			if (loc.isPrimary)
-				loc.class = ListAppend(loc.class, "btn-primary", " ");
+    if (local.isPrimary)
+      local.class = listAppend(local.class, "btn-primary", " ");
 
-			loc.submitTag = loc.coreSubmitTag(argumentCollection=arguments);
-			loc.submitTag = ReplaceNoCase(loc.submitTag, '<input', '<input class="#loc.class#"');
-		</cfscript>
-		<cfreturn loc.submitTag>
-	</cffunction>
+    local.submitTag = core.submitTag(argumentCollection=arguments);
+    return replaceNoCase(local.submitTag, "<input", "<input class=""#local.class#""");
+  }
 
-	<cffunction name="bTextFieldTag" returntype="string" hint="Bootstrap markup version of the standard Wheels `textFieldTag` form helper.">
-		<cfscript>
-			var loc = {
-				formFieldArgs=$bootstrapFormFieldArgs(arguments)
-			};
-		</cfscript>
-		<cfreturn textFieldTag(argumentCollection=arguments)>
-	</cffunction>
+  public string function textFieldTag() {
+    arguments = $bootstrapFormFieldArgs(argumentCollection = arguments);
+    return core.textFieldTag(argumentCollection = arguments);
+  }
 
-	<cffunction name="bPasswordFieldTag" returntype="string" hint="Bootstrap markup version of the standard Wheels `passwordFieldTag` form helper.">
-		<cfscript>
-			var loc = {
-				formFieldArgs=$bootstrapFormFieldArgs(arguments)
-			};
-		</cfscript>
-		<cfreturn passwordFieldTag(argumentCollection=arguments)>
-	</cffunction>
+  public string function passwordFieldTag() {
+    arguments = $bootstrapFormFieldArgs(argumentCollection = arguments);
+    return core.passwordFieldTag(argumentCollection = arguments);
+  }
 
-	<cffunction name="bCheckBoxTag" returntype="string" hint="Bootstrap markup version of the Wheels `checkBox` form helper.">
-		<cfscript>
-			var loc = {};
+  public string function checkBoxTag() {
 
-			loc.field = checkBoxTag(
-				argumentCollection=arguments,
-				labelPlacement="around",
-				labelClass="checkbox"
-			);
+    local.checkBox = core.checkBoxTag(
+      argumentCollection = arguments,
+      labelPlacement = "around"
+    );
 
-			loc.field =
-				'<div class="control-group">
-					<label class="control-label"></label>
-					<div class="controls">
-						#loc.field#
-					</div>
-				</div>';
-		</cfscript>
-		<cfreturn loc.field>
-	</cffunction>
+    local.checkBox =
+      '<div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            #local.checkBox#
+          </div>
+        </div>
+      </div>';
 
-	<cffunction name="bTextAreaTag" returntype="string" hint="Bootstrap markup version of the standard Wheels `textFieldTag` form helper.">
-		<cfscript>
-			var loc = {
-				formFieldArgs=$bootstrapFormFieldArgs(arguments)
-			};
-		</cfscript>
-		<cfreturn textAreaTag(argumentCollection=arguments)>
-	</cffunction>
+    return local.checkBox;
+  }
 
-	<cffunction name="hStartFormTag" returntype="string" hint="Bootstrap markup version of the Wheels `startFormTag` form helper, except with the `form-horizontal` class applied for you.">
-		<cfargument name="class" type="string" required="false" default="" hint="Space-delimited list of classes to apply to the form tag.">
-		<cfscript>
-			arguments.class = ListAppend(arguments.class, "form-horizontal", " ");
-		</cfscript>
-		<cfreturn startFormTag(argumentCollection=arguments)>
-	</cffunction>
+  public string function textAreaTag() {
+    arguments = $bootstrapFormFieldArgs(argumentCollection = arguments);
+    return core.textAreaTag(argumentCollection = arguments);
+  }
 
-	<!---
-		8888888888                                               .d88888b.  888       d8b                   888
-		888                                                     d88P" "Y88b 888       Y8P                   888
-		888                                                     888     888 888                             888
-		8888888  .d88b.  888d888 88888b.d88b.                   888     888 88888b.  8888  .d88b.   .d8888b 888888
-		888     d88""88b 888P"   888 "888 "88b                  888     888 888 "88b "888 d8P  Y8b d88P"    888
-		888     888  888 888     888  888  888      888888      888     888 888  888  888 88888888 888      888
-		888     Y88..88P 888     888  888  888                  Y88b. .d88P 888 d88P  888 Y8b.     Y88b.    Y88b.
-		888      "Y88P"  888     888  888  888                   "Y88888P"  88888P"   888  "Y8888   "Y8888P  "Y888
-		                                                                              888
-		                                                                             d88P
-		                                                                           888P"
-	Form - object helpers --->
+  public string function startFormTag(string class = "") {
+    arguments.class = ListAppend(arguments.class, "form-horizontal", " ");
+    return core.startFormTag(argumentCollection = arguments);
+  }
 
-	<cffunction name="bCheckBox" returntype="string" hint="Bootstrap markup version of the Wheels `checkBox` form helper.">
-		<cfscript>
-			var loc = {};
+  //   8888888888                                               .d88888b.  888       d8b                   888
+  //   888                                                     d88P" "Y88b 888       Y8P                   888
+  //   888                                                     888     888 888                             888
+  //   8888888  .d88b.  888d888 88888b.d88b.                   888     888 88888b.  8888  .d88b.   .d8888b 888888
+  //   888     d88""88b 888P"   888 "888 "88b                  888     888 888 "88b "888 d8P  Y8b d88P"    888
+  //   888     888  888 888     888  888  888      888888      888     888 888  888  888 88888888 888      888
+  //   888     Y88..88P 888     888  888  888                  Y88b. .d88P 888 d88P  888 Y8b.     Y88b.    Y88b.
+  //   888      "Y88P"  888     888  888  888                   "Y88888P"  88888P"   888  "Y8888   "Y8888P  "Y888
+  //                                                                                 888
+  //                                                                                d88P
+  //                                                                              888P"
+  // Form - object helpers
 
-			loc.field = checkBox(
-				argumentCollection=arguments,
-				labelPlacement="around",
-				labelClass="checkbox"
-			);
+  public string function checkBox() {
 
-			loc.hasErrors = Evaluate($objectName(argumentCollection=arguments)).hasErrors(arguments.property);
+    local.checkBox = core.checkBox(
+      argumentCollection = arguments,
+      labelPlacement = "around"
+    );
 
-			loc.field =
-				'<div class="control-group #loc.hasErrors ? 'error': ''#">
-					<label class="control-label"></label>
-					<div class="controls">
-						#loc.field#
-					</div>
-				</div>';
-		</cfscript>
-		<cfreturn loc.field>
-	</cffunction>
+    local.hasErrors = Evaluate($objectName(argumentCollection=arguments)).hasErrors(arguments.property);
 
-	<cffunction name="bFileField" returntype="string" hint="Bootstrap markup version of the Wheels `fileField` form helper.">
-		<cfscript>
-			var loc = {
-				formFieldArgs=$boostrapObjectFormFieldArgs(arguments)
-			};
-		</cfscript>
-		<cfreturn fileField(argumentCollection=loc.formFieldArgs)>
-	</cffunction>
+    local.checkBox =
+      '<div class="form-group #local.hasErrors ? 'has-error': ''#">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            #local.checkBox#
+          </div>
+        </div>
+      </div>';
 
-	<cffunction name="bPasswordField" returntype="string" hint="Bootstrap markup version of the Wheels `passwordField` form helper.">
-		<cfscript>
-			var loc = {
-				formFieldArgs=$boostrapObjectFormFieldArgs(arguments)
-			};
-		</cfscript>
-		<cfreturn passwordField(argumentCollection=loc.formFieldArgs)>
-	</cffunction>
+    return local.checkBox;
+  }
 
-	<cffunction name="bSelect" returntype="string" hint="Bootstrap markup version of the Wheels `select` form helper.">
-		<cfscript>
-			var loc = {
-				formFieldArgs=$boostrapObjectFormFieldArgs(arguments)
-			};
-		</cfscript>
-		<cfreturn select(argumentCollection=loc.formFieldArgs)>
-	</cffunction>
+  public string function fileField() {
+    arguments = $boostrapObjectFormFieldArgs(argumentCollection = arguments);
+    return core.fileField(argumentCollection = arguments);
+  }
 
-	<cffunction name="bTextArea" returntype="string" hint="Boostrap markup version of the Wheels `textArea` form helper.">
-		<cfscript>
-			var loc = {
-				formFieldArgs=$boostrapObjectFormFieldArgs(arguments)
-			};
-		</cfscript>
-		<cfreturn textArea(argumentCollection=loc.formFieldArgs)>
-	</cffunction>
+  public string function passwordField() {
+    arguments = $boostrapObjectFormFieldArgs(argumentCollection = arguments);
+    return core.passwordField(argumentCollection = arguments);
+  }
 
-	<cffunction name="bTextField" returntype="string" hint="Bootstrap markup version of the Wheels `textField` form helper.">
-		<cfscript>
-			var loc = {
-				formFieldArgs=$boostrapObjectFormFieldArgs(arguments)
-			};
-		</cfscript>
-		<cfreturn textField(argumentCollection=loc.formFieldArgs)>
-	</cffunction>
+  public string function select() {
+    arguments = $boostrapObjectFormFieldArgs(argumentCollection = arguments);
+    return core.select(argumentCollection = arguments);
+  }
 
-	<cffunction name="bUneditableTextField" returntype="string" hint="Bootstrap helper for showing an uneditable text field.">
-		<cfargument name="label" type="string" required="true" hint="Field label.">
-		<cfargument name="value" type="string" required="true" hint="Value to display in box.">
-		<cfargument name="class" type="string" required="false" default="" hint="Classes to apply to the box.">
-		<cfscript>
-			var loc = {};
+  public string function textArea() {
+    arguments = $boostrapObjectFormFieldArgs(argumentCollection = arguments);
+    return core.textArea(argumentCollection = arguments);
+  }
 
-			loc.field = '<div class="control-group">';
-			loc.field &= '<label class="control-label">#h(arguments.label)#</label>';
-			loc.field &= '<div class="controls"><span class="uneditable-input #h(arguments.class)#">#arguments.value#</span></div>';
-			loc.field &= '</div>';
-		</cfscript>
-		<cfreturn loc.field>
-	</cffunction>
+  public string function textField() {
+    arguments = $boostrapObjectFormFieldArgs(argumentCollection = arguments);
+    return core.textField(argumentCollection = arguments);
+  }
 
-	<!---
-		888                                          888
-		888                                          888
-		888                                          888
-		888       8888b.  888  888  .d88b.  888  888 888888
-		888          "88b 888  888 d88""88b 888  888 888
-		888      .d888888 888  888 888  888 888  888 888
-		888      888  888 Y88b 888 Y88..88P Y88b 888 Y88b.
-		88888888 "Y888888  "Y88888  "Y88P"   "Y88888  "Y888
-		                       888
-		                  Y8b d88P
-		                   "Y88P"
-	Layout helpers --->
+  //   888                                          888
+  //   888                                          888
+  //   888                                          888
+  //   888       8888b.  888  888  .d88b.  888  888 888888
+  //   888          "88b 888  888 d88""88b 888  888 888
+  //   888      .d888888 888  888 888  888 888  888 888
+  //   888      888  888 Y88b 888 Y88..88P Y88b 888 Y88b.
+  //   88888888 "Y888888  "Y88888  "Y88P"   "Y88888  "Y888
+  //                          888
+  //                     Y8b d88P
+  //                      "Y88P"
+  // Layout helpers
 
-	<cffunction name="bFlashMessages" returntype="string" hint="Bootstrap markup version of the Wheels `flashMessages` view helper.">
-		<cfscript>
-			var loc = {
-				flash=flash(),
-				flashKeyList=StructKeyList(flash()),
-				flashMessages=""
-			};
+  public string function flashMessages() {
 
-			if (flashCount())
-			{
-				for (loc.i = 1; loc.i <= flashCount(); loc.i++)
-				{
-					loc.flashKey = ListGetAt(loc.flashKeyList, loc.i);
+    local.rv = "";
+    local.keys = structKeyList(flash());
 
-					loc.flashMessages &=
-						'<div class="alert alert-#LCase(loc.flashKey)# fade in">
-							<a class="close" data-dismiss="alert" href="##" title="Dismiss">&times;</a>
-							#h(flash(loc.flashKey))#
-						</div>';
-				}
-			}
-		</cfscript>
-		<cfreturn loc.flashMessages>
-	</cffunction>
+    if (flashCount()) {
+      for (local.i = 1; local.i <= flashCount(); local.i++)
+      {
+        local.flashKey = ListGetAt(local.flashKeyList, local.i);
 
-	<!---
-		888b     d888 d8b
-		8888b   d8888 Y8P
-		88888b.d88888
-		888Y88888P888 888 .d8888b   .d8888b
-		888 Y888P 888 888 88K      d88P"
-		888  Y8P  888 888 "Y8888b. 888
-		888   "   888 888      X88 Y88b.
-		888       888 888  88888P'  "Y8888P
+        local.rv &=
+          '<div class="alert alert-dismissible alert-#LCase(local.flashKey)#">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <a class="close" data-dismiss="alert" href="##" title="Dismiss">&times;</a>
+            <strong>#capitalize(local.flashKey)#!</strong> #h(flash(local.flashKey))#
+          </div>';
+      }
 
-	Miscellaneous helpers --->
+      return local.rv;
+    }
+  }
 
-	<cffunction name="bPaginationLinks" returntype="string" hint="Bootstrap markup version of the Wheels `paginationLinks` view helper.">
-		<cfscript>
-			var loc = {};
+  //   888b     d888 d8b
+  //   8888b   d8888 Y8P
+  //   88888b.d88888
+  //   888Y88888P888 888 .d8888b   .d8888b
+  //   888 Y888P 888 888 88K      d88P"
+  //   888  Y8P  888 888 "Y8888b. 888
+  //   888   "   888 888      X88 Y88b.
+  //   888       888 888  88888P'  "Y8888P
+  // Miscellaneous helpers
 
-			loc.paginationArgs = Duplicate(arguments);
+  public string function paginationLinks() {
 
-			loc.paginationArgs.prepend = '<ul class="pagination">';
-			loc.paginationArgs.append = '</ul>';
-			loc.paginationArgs.prependToPage = '<li>';
-			loc.paginationArgs.appendToPage = '</li>';
-			loc.paginationArgs.classForCurrent = "active";
-			loc.paginationArgs.linkToCurrentPage = false;
-			loc.paginationArgs.anchorDivider = "";
-			loc.paginationArgs.linkToCurrentPage = true;
+    arguments.prepend = '<ul class="pagination">';
+    arguments.append = '</ul>';
+    arguments.prependToPage = '<li>';
+    arguments.appendToPage = '</li>';
+    arguments.classForCurrent = "active";
+    arguments.linkToCurrentPage = false;
+    arguments.anchorDivider = "";
+    arguments.linkToCurrentPage = true;
 
-			loc.paginationLinks = paginationLinks(argumentCollection=loc.paginationArgs);
-			loc.paginationLinks = Replace(loc.paginationLinks, '<li><a class="active"', '<li class="active"><a', "all");
-		</cfscript>
-		<cfreturn loc.paginationLinks>
-	</cffunction>
+    local.rv = core.paginationLinks(argumentCollection=arguments);
 
-	<!---
-		8888888b.          d8b                   888
-		888   Y88b         Y8P                   888
-		888    888                               888
-		888   d88P 888d888 888 888  888  8888b.  888888 .d88b.
-		8888888P"  888P"   888 888  888     "88b 888   d8P  Y8b
-		888        888     888 Y88  88P .d888888 888   88888888
-		888        888     888  Y8bd8P  888  888 Y88b. Y8b.
-		888        888     888   Y88P   "Y888888  "Y888 "Y8888
+    return replace(
+      local.rv,
+      '<li><a class="active"',
+      '<li class="active"><a', "all"
+    );
+  }
 
-	Private --->
+  //   8888888b.          d8b                   888
+  //   888   Y88b         Y8P                   888
+  //   888    888                               888
+  //   888   d88P 888d888 888 888  888  8888b.  888888 .d88b.
+  //   8888888P"  888P"   888 888  888     "88b 888   d8P  Y8b
+  //   888        888     888 Y88  88P .d888888 888   88888888
+  //   888        888     888  Y8bd8P  888  888 Y88b. Y8b.
+  //   888        888     888   Y88P   "Y888888  "Y888 "Y8888
+  // Private
 
-	<cffunction name="$bootstrapFormFieldArgs" returntype="struct" hint="Factors out common elements that need to be set to get form fields to be Bootstrap-friendly.">
-		<cfargument name="fieldArgs" type="struct" required="true" hint="`arguments` scope passed to form helper.">
-		<cfscript>
-			var loc = {};
+  public struct function $bootstrapFormFieldArgs() {
 
-			if (!StructKeyExists(arguments.fieldArgs, "labelClass"))
-				arguments.fieldArgs.labelClass = "";
+    if (!structKeyExists(arguments, "labelClass"))
+      arguments.labelClass = "";
 
-			arguments.fieldArgs.labelPlacement = "before";
-			arguments.fieldArgs.labelClass = ListAppend(arguments.fieldArgs.labelClass, "control-label", " ");
-			arguments.fieldArgs.prepend = '<div class="controls">';
-			arguments.fieldArgs.prependToLabel = '<div class="control-group">';
-			arguments.fieldArgs.append = '</div></div>';
-			arguments.fieldArgs.errorElement = "";
-			arguments.fieldArgs.errorClass = "";
+    if (!structKeyExists(arguments, "class"))
+      arguments.class = "";
 
-			// Prepend/appended text
-			loc.hasPrependedText = StructKeyExists(arguments.fieldArgs, "prependedText") && Len(arguments.fieldArgs.prependedText);
-			loc.hasAppendedText = StructKeyExists(arguments.fieldArgs, "appendedText") && Len(arguments.fieldArgs.appendedText);
+    arguments.labelPlacement = "before";
+    arguments.class = listAppend(arguments.class, "form-control", " ");
+    arguments.labelClass = listAppend(arguments.labelClass, "col-sm-3 control-label", " ");
+    arguments.prepend = '<div class="col-sm-9 input-group">';
+    arguments.prependToLabel = '<div class="form-group">';
+    arguments.append = '</div></div>';
+    arguments.errorElement = "";
+    arguments.errorClass = "";
 
-			if (loc.hasPrependedText || loc.hasAppendedText)
-			{
-				loc.prependClass = loc.hasPrependedText ? 'input-prepend' : '';
-				loc.appendClass = loc.hasAppendedText ? 'input-append' : '';
-				arguments.fieldArgs.prepend &= '<div class="#loc.prependClass# #loc.appendClass#">';
-				arguments.fieldArgs.append = '</div>' & arguments.fieldArgs.append;
+    // Prepend/appended text
+    local.hasPrependedText = StructKeyExists(arguments, "prependedText") && Len(arguments.prependedText);
+    local.hasAppendedText = StructKeyExists(arguments, "appendedText") && Len(arguments.appendedText);
 
-				if (loc.hasPrependedText)
-					arguments.fieldArgs.prepend &= '<span class="add-on">#arguments.fieldArgs.prependedText#</span>';
+    if (local.hasPrependedText || local.hasAppendedText)
+    {
+      if (local.hasPrependedText)
+        arguments.prepend &= '<span class="input-group-addon">#arguments.prependedText#</span>';
 
-				if (loc.hasAppendedText)
-					arguments.fieldArgs.append =
-						'<span class="add-on">#arguments.fieldArgs.appendedText#</span>'
-						& arguments.fieldArgs.append;
-			}
+      if (local.hasAppendedText)
+        arguments.append =
+          '<span class="input-group-addon">#arguments.appendedText#</span>'
+          & arguments.append;
+    }
 
-			// Help block
-			if (StructKeyExists(arguments.fieldArgs, "helpBlock") && Len(arguments.fieldArgs.helpBlock))
-				arguments.fieldArgs.append = '<p class="help-block">#arguments.fieldArgs.helpBlock#</p>'
-					& arguments.fieldArgs.append;
+    // Help block
+    if (StructKeyExists(arguments, "helpBlock") && Len(arguments.helpBlock))
+      arguments.append = '<p class="help-block">#arguments.helpBlock#</p>'
+        & arguments.append;
 
-			// Remove arguments that will cause extra HTML attributes to be added
-			StructDelete(arguments.fieldArgs, "helpBlock");
-			StructDelete(arguments.fieldArgs, "prependedText");
-			StructDelete(arguments.fieldArgs, "appendedText");
-		</cfscript>
-		<cfreturn arguments.fieldArgs>
-	</cffunction>
+    // Remove arguments that will cause extra HTML attributes to be added
+    StructDelete(arguments, "helpBlock");
+    StructDelete(arguments, "prependedText");
+    StructDelete(arguments, "appendedText");
 
-	<cffunction name="$boostrapObjectFormFieldArgs" returntype="struct" hint="Factors out common elements that needs to be set to get object-based form fields to be Bootstrap-friendly.">
-		<cfargument name="fieldArgs" type="struct" required="true" hint="`arguments` scope passed to form helper.">
-		<cfscript>
-			var loc = {};
+    return arguments;
+  }
 
-			// Get basic settings from general form field helper
-			arguments.fieldArgs = $bootstrapFormFieldArgs(arguments.fieldArgs);
+  public struct function $boostrapObjectFormFieldArgs() {
 
-			// Arguments needed for `errorMessageOn`
-			loc.errorMessageOnArgs = {
-				objectName=arguments.fieldArgs.objectName,
-				property=arguments.fieldArgs.property,
-				wrapperElement="span",
-				class="help-inline"
-			};
-			if (StructKeyExists(arguments.fieldArgs, "association"))
-				loc.errorMessageOnArgs.association = arguments.fieldArgs.association;
-			if (StructKeyExists(arguments.fieldArgs, "position"))
-				loc.errorMessageOnArgs.position = arguments.fieldArgs.position;
+    // Get basic settings from general form field helper
+    arguments = $bootstrapFormFieldArgs(argumentCollection = arguments);
 
-			// Error message
-			if (Evaluate($objectName(argumentCollection=arguments.fieldArgs)).hasErrors(arguments.fieldArgs.property))
-			{
-				arguments.fieldArgs.prependToLabel = Replace(
-					arguments.fieldArgs.prependToLabel,
-					'<div class="control-group">',
-					'<div class="control-group error">'
-				);
+    // Arguments needed for `errorMessageOn`
+    local.errorMessageOnArgs = {
+      objectName=arguments.objectName,
+      property=arguments.property,
+      wrapperElement="span",
+      class="help-inline"
+    };
 
-				arguments.fieldArgs.append =
-					' #errorMessageOn(argumentCollection=loc.errorMessageOnArgs)#'
-					& arguments.fieldArgs.append;
-			}
-		</cfscript>
-		<cfreturn arguments.fieldArgs>
-	</cffunction>
+    if (StructKeyExists(arguments, "association"))
+      local.errorMessageOnArgs.association = arguments.association;
 
-</cfcomponent>
+    if (StructKeyExists(arguments, "position"))
+      local.errorMessageOnArgs.position = arguments.position;
+
+    // Error message
+    if (Evaluate($objectName(argumentCollection=arguments)).hasErrors(arguments.property))
+    {
+      arguments.prependToLabel = Replace(
+        arguments.prependToLabel,
+        '<div class="control-group">',
+        '<div class="control-group error">'
+      );
+
+      arguments.append =
+        ' #errorMessageOn(argumentCollection=local.errorMessageOnArgs)#'
+        & arguments.append;
+    }
+
+    return arguments;
+  }
+}
