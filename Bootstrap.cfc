@@ -29,11 +29,6 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
   //                                                                              "Y88P"
   // Form - tag helpers
 
-  public string function selectTag() {
-    arguments = $bootstrapFormFieldArgs(argumentCollection = arguments);
-    return core.selectTag(argumentCollection = arguments);
-  }
-
   public string function submitTag(string class = "", boolean isPrimary = false) {
 
     local.class = listAppend(arguments.class, "btn", " ");
@@ -47,40 +42,6 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
 
     local.submitTag = core.submitTag(argumentCollection=arguments);
     return replaceNoCase(local.submitTag, "<input", "<input class=""#local.class#""");
-  }
-
-  public string function textFieldTag() {
-    arguments = $bootstrapFormFieldArgs(argumentCollection = arguments);
-    return core.textFieldTag(argumentCollection = arguments);
-  }
-
-  public string function passwordFieldTag() {
-    arguments = $bootstrapFormFieldArgs(argumentCollection = arguments);
-    return core.passwordFieldTag(argumentCollection = arguments);
-  }
-
-  public string function checkBoxTag() {
-
-    local.checkBox = core.checkBoxTag(
-      argumentCollection = arguments,
-      labelPlacement = "around"
-    );
-
-    local.checkBox =
-      '<div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <div class="checkbox">
-            #local.checkBox#
-          </div>
-        </div>
-      </div>';
-
-    return local.checkBox;
-  }
-
-  public string function textAreaTag() {
-    arguments = $bootstrapFormFieldArgs(argumentCollection = arguments);
-    return core.textAreaTag(argumentCollection = arguments);
   }
 
   public string function startFormTag(string class = "") {
@@ -108,7 +69,7 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
       labelPlacement = "around"
     );
 
-    local.hasErrors = Evaluate($objectName(argumentCollection=arguments)).hasErrors(arguments.property);
+    local.hasErrors = $formHasError(argumentCollection=arguments);
 
     local.checkBox =
       '<div class="form-group #local.hasErrors ? 'has-error': ''#">
