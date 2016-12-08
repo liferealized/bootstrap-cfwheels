@@ -289,7 +289,7 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
       local.errorMessageOnArgs.position = arguments.position;
 
     // Error message
-    if (Evaluate($objectName(argumentCollection=arguments)).hasErrors(arguments.property))
+    if ($formHasError(argumentCollection=arguments))
     {
       arguments.prependToLabel = Replace(
         arguments.prependToLabel,
