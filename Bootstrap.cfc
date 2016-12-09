@@ -140,14 +140,13 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
     if (flashCount()) {
       for (local.i = 1; local.i <= flashCount(); local.i++)
       {
-        local.flashKey = ListGetAt(local.flashKeyList, local.i);
+        local.flashKey = ListGetAt(local.keys, local.i);
 
         local.rv &=
           '<div class="alert alert-dismissible alert-#LCase(local.flashKey)#">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <a class="close" data-dismiss="alert" href="##" title="Dismiss">&times;</a>
             <strong>#capitalize(local.flashKey)#!</strong> #h(flash(local.flashKey))#
           </div>';
       }
@@ -251,7 +250,7 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
       objectName=arguments.objectName,
       property=arguments.property,
       wrapperElement="span",
-      class="help-inline"
+      class="help-block"
     };
 
     if (StructKeyExists(arguments, "association"))
@@ -265,8 +264,8 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
     {
       arguments.prependToLabel = Replace(
         arguments.prependToLabel,
-        '<div class="control-group">',
-        '<div class="control-group error">'
+        '<div class="form-group">',
+        '<div class="form-group has-error">'
       );
 
       arguments.append =
