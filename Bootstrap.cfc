@@ -56,8 +56,15 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
   }
 
   public string function startFormTag(string class = "") {
-    arguments.class = ListAppend(arguments.class, "form-horizontal", " ");
+    if (findNoCase("form-", arguments.class) == 0)
+      arguments.class = ListAppend(arguments.class, "form-horizontal", " ");
+    request.wheels.formDirective = REReplaceNoCase(arguments.class, "form-([^ ]+)", "\1");
     return core.startFormTag(argumentCollection = arguments);
+  }
+
+  public string function endFormTag() {
+    structDelete(request.wheels, "formDirective", false);
+    return core.endFormTag(argumentCollection = arguments);
   }
 
   //   8888888888                                               .d88888b.  888       d8b                   888
@@ -203,14 +210,46 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
     if (!structKeyExists(arguments, "class"))
       arguments.class = "";
 
+    local.formDirective = "horizontal";
+    if (structKeyExists(request.wheels, "formDirective"))
+      local.formDirective = request.wheels.formDirective;
+
     arguments.labelPlacement = "before";
     arguments.class = listAppend(arguments.class, "form-control", " ");
-    arguments.labelClass = listAppend(arguments.labelClass, "col-sm-3 control-label", " ");
-    arguments.prepend = '<div class="col-sm-9 input-group">';
     arguments.prependToLabel = '<div class="form-group">';
-    arguments.append = '</div></div>';
     arguments.errorElement = "";
     arguments.errorClass = "";
+
+
+    switch (local.formDirective) {
+
+      case "horizontal":
+        arguments.labelClass = listAppend(arguments.labelClass, "col-sm-3 control-label", " ");
+
+        if (len($getFieldLabel(argumentCollection=arguments))) {
+          arguments.prependToLabel = '<div class="form-group">';
+          arguments.prepend = '<div class="col-sm-9 input-group">';
+        }
+        else {
+          arguments.prepend = '<div class="form-group">';
+          arguments.prepend &= '<div class="col-sm-9 input-group">';
+        }
+
+        arguments.append = '</div></div>';
+        break;
+
+      default:
+        arguments.labelClass = listAppend(arguments.labelClass, "control-label", " ");
+
+        if (len($getFieldLabel(argumentCollection=arguments)))
+          arguments.prependToLabel = '<div class="form-group">';
+        else
+          arguments.prepend = '<div class="form-group">';
+
+        arguments.append = '</div>';
+        break;
+    }
+
 
     // Prepend/appended text
     local.hasPrependedText = StructKeyExists(arguments, "prependedText") && Len(arguments.prependedText);
