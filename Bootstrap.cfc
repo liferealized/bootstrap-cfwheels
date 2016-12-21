@@ -202,7 +202,7 @@ component mixin="controller" dependency="NestedErrorMessageOn" output="false" {
   //   888        888     888   Y88P   "Y888888  "Y888 "Y8888
   // Private
 
-  public struct function $bootstrapFormFieldArgs() {
+  public struct function $bootstrapFormFieldArgs(string label = "useDefaultLabel") {
 
     if (!structKeyExists(arguments, "labelClass"))
       arguments.labelClass = "";
